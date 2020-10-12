@@ -1,5 +1,6 @@
 #include "GameObject.hh"
 #include <iostream>
+#include "CollisionUtil.hh"
 
 GameObject::GameObject()
 {
@@ -16,16 +17,14 @@ bool GameObject::isColliding(const GameObject& other)
         }
         else if(other.colliderType==BOX)
         {
-            //TODO
-            return false;
+            return collision::boxCircle(other.pos, other.box_len_x, other.box_len_y, pos, circle_r);
         }
     }
     else if(colliderType==BOX)
     {
         if(other.colliderType==CIRCLE)
         {
-            //TODO
-            return false;
+            return collision::boxCircle(pos, box_len_x, box_len_y, other.pos, other.circle_r);
         }
         else if(other.colliderType==BOX)
         {
