@@ -8,6 +8,8 @@ GameController::GameController()
     m_player->pos = point_t(0, 0);
     m_player->colliderType = CIRCLE;
     m_player->circle_r = 5;
+    m_player->box_len_x = 10;
+    m_player->box_len_y = 10;
     m_player->sprite.setTexture(m_textureBank.get("smiley.png"));
     m_player->moveSpeed = 1;
 
