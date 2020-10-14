@@ -7,7 +7,12 @@ Graphics::Graphics(int windowWidth, int windowHeight)
      m_windowSize(windowWidth, windowHeight),
      m_cameraScale(windowWidth / 200.0)
 {
+    m_reticleSprite.setTexture(TextureBank::get("reticle.png"));
+    m_reticleSprite.setOrigin(sf::Vector2f(m_reticleSprite.getTexture()->getSize() / (unsigned int)2));
+    float cursorScale = 0.4;
+    m_reticleSprite.setScale(cursorScale, cursorScale);
 
+    m_window.setMouseCursorVisible(false);
 }
 //TODO objects should be sorted by some kind of z-level
 //That probably waits until we have a better ontology for objects
@@ -39,11 +44,21 @@ void Graphics::draw(std::vector<std::shared_ptr<GameObject>>& objects)
         objects[i]->sprite.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
 
         point_t cameraPos = worldToCamera(objects[i]->pos);
-        objects[i]->sprite.setPosition(floatVec(cameraPos));
+        objects[i]->sprite.setPosition(sf::Vector2f(cameraPos));
         m_window.draw(objects[i]->sprite);
     }
 
+    m_window.draw(m_reticleSprite);
+
     m_window.display();
+}
+
+point_t Graphics::getMousePos()
+{
+    sf::Vector2f mouseCameraPos(sf::Mouse::getPosition(m_window));
+    m_reticleSprite.setPosition(mouseCameraPos);
+
+    return cameraToWorld(mouseCameraPos);
 }
 
 point_t Graphics::worldToCamera(point_t worldPoint)
@@ -56,7 +71,13 @@ point_t Graphics::worldToCamera(point_t worldPoint)
     return cameraDiff + (m_windowSize / 2.0);
 }
 
-sf::Vector2f Graphics::floatVec(point_t point)
+
+point_t Graphics::cameraToWorld(sf::Vector2f cameraPoint)
 {
-    return sf::Vector2f((float)point.x, (float)point.y);
+    point_t point(cameraPoint);
+    point -= m_windowSize / 2.0;
+    point.y *= -1.0;
+    point /= m_cameraScale;
+    point += m_cameraWorldPos;
+    return point;
 }

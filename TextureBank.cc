@@ -1,6 +1,8 @@
 #include "TextureBank.hh"
 
-sf::Texture& TextureBank::get(std::string filename)
+std::shared_ptr<TextureBank> TextureBank::instance;
+
+sf::Texture& TextureBank::get_texture(std::string filename)
 {
     if(m_map.count(filename) == 0)
     {
@@ -9,4 +11,12 @@ sf::Texture& TextureBank::get(std::string filename)
     }
 
     return m_map[filename];
+}
+
+TextureBank& TextureBank::getInstance(){
+    if(instance.get() == nullptr)
+    {
+        instance.reset(new TextureBank());
+    }
+    return *instance;
 }

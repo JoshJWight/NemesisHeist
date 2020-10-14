@@ -1,4 +1,5 @@
 #include "GameObject.hh"
+#include "TextureBank.hh"
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
@@ -10,11 +11,11 @@ public:
 
     void draw(std::vector<std::shared_ptr<GameObject>>& objects);
 
-
+    point_t getMousePos();
 
 private:
     point_t worldToCamera(point_t worldPoint);
-    sf::Vector2f floatVec(point_t point);
+    point_t cameraToWorld(sf::Vector2f cameraPoint);
 
     sf::RenderWindow m_window;
 
@@ -23,6 +24,8 @@ private:
     double m_cameraScale;
 
     point_t m_windowSize;
+
+    sf::Sprite m_reticleSprite;
 
 
 };

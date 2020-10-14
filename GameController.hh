@@ -18,6 +18,5 @@ private:
     Graphics m_graphics;
     std::vector<std::shared_ptr<GameObject>> m_objects;
 
-    TextureBank m_textureBank;
     std::shared_ptr<GameObject> m_player;
 };
