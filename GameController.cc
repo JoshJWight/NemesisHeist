@@ -7,24 +7,20 @@ GameController::GameController()
     m_player.reset(new GameObject);
     m_player->pos = point_t(0, 0);
     m_player->colliderType = CIRCLE;
-    m_player->circle_r = 5;
-    m_player->box_len_x = 10;
-    m_player->box_len_y = 10;
+    m_player->size = point_t(10, 10);
     m_player->sprite.setTexture(TextureBank::get("smiley.png"));
     m_player->moveSpeed = 1;
 
     std::shared_ptr<GameObject> obj(new GameObject);
     obj-> pos = point_t(10, 10);
     obj-> colliderType = BOX;
-    obj-> box_len_x = 20;
-    obj-> box_len_y = 20;
+    obj-> size = point_t(20, 20);
     obj->sprite.setTexture(TextureBank::get("box.png"));
 
     std::shared_ptr<GameObject> obj2(new GameObject);
-    obj2-> pos = point_t(-20, -20);
+    obj2-> pos = point_t(-20, -30);
     obj2-> colliderType = BOX;
-    obj2-> box_len_x = 20;
-    obj2-> box_len_y = 20;
+    obj2-> size = point_t(20, 30);
     obj2->sprite.setTexture(TextureBank::get("box.png"));
 
 

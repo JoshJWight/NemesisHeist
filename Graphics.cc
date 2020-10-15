@@ -34,11 +34,11 @@ void Graphics::draw(std::vector<std::shared_ptr<GameObject>>& objects)
     {
         //scale the size and origin of the sprite
         const sf::Texture * texture = objects[i]->sprite.getTexture();
-        sf::Vector2u texSize = texture->getSize();
-        float scaleX = m_cameraScale * objects[i]->box_len_x / (float)texSize.x;
-        float scaleY = m_cameraScale * objects[i]->box_len_y / (float)texSize.y;
+        sf::Vector2f texSize(texture->getSize());
+        sf::Vector2f scale(m_cameraScale * objects[i]->size);
+        scale = math_util::elementwise_divide(scale, texSize);
 
-        objects[i]->sprite.setScale(sf::Vector2f(scaleX, scaleY));
+        objects[i]->sprite.setScale(scale);
         //Since this ignores all transformations we don't need to do it every time.
         //GameObject could handle this
         objects[i]->sprite.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);

@@ -16,15 +16,14 @@ class GameObject
 public:
     GameObject();
 
-    bool isColliding(const GameObject& other);
-    void bounceOutOf(const GameObject& other);
+    bool isColliding(GameObject& other);
+    void bounceOutOf(GameObject& other);
+    double radius();
 
     ColliderType colliderType;
 
     point_t pos;
-    double circle_r;
-    double box_len_x;
-    double box_len_y;
+    point_t size;
 
     sf::Sprite sprite;
 

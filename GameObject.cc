@@ -7,37 +7,39 @@ GameObject::GameObject()
 
 }
 
-bool GameObject::isColliding(const GameObject& other)
+double GameObject::radius()
+{
+    return size.x / 2.0;
+}
+
+bool GameObject::isColliding(GameObject& other)
 {
     if(colliderType==CIRCLE)
     {
         if(other.colliderType==CIRCLE)
         {
-            return math_util::dist(pos, other.pos) < (circle_r + other.circle_r);
+            return math_util::dist(pos, other.pos) < (radius() + other.radius());
         }
         else if(other.colliderType==BOX)
         {
-            return collision::boxCircle(other.pos, other.box_len_x, other.box_len_y, pos, circle_r);
+            return collision::boxCircle(other.pos, other.size, pos, radius());
         }
     }
     else if(colliderType==BOX)
     {
         if(other.colliderType==CIRCLE)
         {
-            return collision::boxCircle(pos, box_len_x, box_len_y, other.pos, other.circle_r);
+            return collision::boxCircle(pos, size, other.pos, other.radius());
         }
         else if(other.colliderType==BOX)
         {
-            double top1 = pos.y + box_len_y / 2.0;
-            double bottom1 = pos.y - box_len_y / 2.0;
-            double left1 = pos.x - box_len_x / 2.0;
-            double right1 = pos.x - box_len_x / 2.0;
-            double top2 = other.pos.y + other.box_len_y / 2.0;
-            double bottom2 = other.pos.y - other.box_len_y / 2.0;
-            double left2 = other.pos.x - other.box_len_x / 2.0;
-            double right2 = other.pos.x - other.box_len_x / 2.0;
+            //Top right, bottom left
+            point_t tr1 = pos + (size / 2.0);
+            point_t bl1 = pos - (size / 2.0);
+            point_t tr2 = other.pos + (other.size / 2.0);
+            point_t bl2 = other.pos - (other.size / 2.0);
 
-            return (top1 > bottom2 && bottom1 < top2 && left1 < right2 && right1 > left2);
+            return (tr1.y > bl2.y && bl2.y < tr2.y && bl1.x < tr2.x && tr1.x > bl2.x);
         }
     }
 
@@ -45,7 +47,7 @@ bool GameObject::isColliding(const GameObject& other)
     return false;
 }
 
-void GameObject::bounceOutOf(const GameObject& other)
+void GameObject::bounceOutOf(GameObject& other)
 {
     //TODO
 }

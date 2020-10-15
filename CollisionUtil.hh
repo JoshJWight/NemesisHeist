@@ -33,9 +33,9 @@ static bool horizontalLineCircle(point_t left, point_t right, point_t circleCent
         pointInsideCircle(right, circleCenter, circleRadius));
 }
 
-static bool boxCircle(point_t boxCenter, double boxLenX, double boxLenY, point_t circleCenter, double circleRadius)
+static bool boxCircle(point_t boxCenter, point_t boxSize, point_t circleCenter, double circleRadius)
 {
-    if(pointInsideBox(circleCenter, boxCenter, boxLenX, boxLenY))
+    if(pointInsideBox(circleCenter, boxCenter, boxSize.x, boxSize.y))
     {
         return true;
     }
@@ -45,12 +45,11 @@ static bool boxCircle(point_t boxCenter, double boxLenX, double boxLenY, point_t
     }
     else
     {
-        float halfBoxX = boxLenX / 2.0;
-        float halfBoxY = boxLenY / 2.0;
-        point_t topLeft = boxCenter + point_t(-1.0 * halfBoxX, halfBoxY);
-        point_t topRight = boxCenter + point_t(halfBoxX, halfBoxY);
-        point_t bottomLeft = boxCenter + point_t(-1.0 * halfBoxX, -1.0 * halfBoxY);
-        point_t bottomRight = boxCenter + point_t(halfBoxX, -1.0 * halfBoxY);
+        point_t halfBox = boxSize / 2.0;
+        point_t topLeft = boxCenter + point_t(-1.0 * halfBox.x, halfBox.y);
+        point_t topRight = boxCenter + halfBox;
+        point_t bottomLeft = boxCenter - halfBox;
+        point_t bottomRight = boxCenter + point_t(halfBox.x, -1.0 * halfBox.y);
 
         return horizontalLineCircle(topLeft, topRight, circleCenter, circleRadius) ||
                horizontalLineCircle(bottomLeft, bottomRight, circleCenter, circleRadius) ||
